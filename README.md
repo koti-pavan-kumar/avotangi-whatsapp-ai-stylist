@@ -302,7 +302,7 @@ For portfolio and educational purposes only.
    ![Workflow](assets/screenshots/workflow.png)
    
    ### WhatsApp Conversation
-   ![Chat Example](assets/screenshots/whatsapp Messages.png)
+   ![Chat Example](assets/screenshots/WhatsApp-Messages.png)
    
 ## 👤 About Me
 
