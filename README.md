@@ -299,7 +299,7 @@ For portfolio and educational purposes only.
 ## Screenshots
    
    ### n8n Workflow
-   ![Workflow](assets/screenshots/workflow.png)
+   ![Workflow](assets/screenshots/Workflow.png)
    
    ### WhatsApp Conversation
    ![Chat Example](assets/screenshots/WhatsApp-Example.png)
