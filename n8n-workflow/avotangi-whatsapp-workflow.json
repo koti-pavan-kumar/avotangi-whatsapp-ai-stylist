@@ -1,0 +1,311 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "avotangi-whatsapp",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -160,
+        -256
+      ],
+      "id": "1a0d466a-8dbf-419f-9b5a-f959bf6bc2f9",
+      "name": "Webhook",
+      "webhookId": "6501c9b7-1b25-486b-877c-bff5661a0c28"
+    },
+    {
+      "parameters": {
+        "from": "whatsapp:+14155238886",
+        "to": "={{ $node[\"Check Message Type\"].json[\"customer_phone\"] }}",
+        "message": "={{ $json.ai_response }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.twilio",
+      "typeVersion": 1,
+      "position": [
+        1408,
+        -160
+      ],
+      "id": "9f0b00da-6c15-497a-8e5f-6d3748ccaa4f",
+      "name": "Send an SMS/MMS/WhatsApp message",
+      "credentials": {
+        "twilioApi": {
+          "id": "K2Qdsf9Latmcoqmo",
+          "name": "Twilio account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get webhook data directly\nconst webhookData = $input.first().json.body || $input.first().json;\n\n// Extract fields with capital letters (Twilio format)\nconst numMedia = parseInt(webhookData.NumMedia || 0);\nconst messageBody = webhookData.Body || \"\";\nconst customerPhone = webhookData.From || \"\";\nconst mediaContentType = webhookData.MediaContentType0 || \"\";\n\n// Determine message type\nlet messageType = \"text\";\nlet mediaUrl = null;\n\nif (numMedia > 0) {\n  // Check if it's audio (voice note)\n  if (mediaContentType && mediaContentType.includes('audio')) {\n    messageType = \"voice\";\n    mediaUrl = webhookData.MediaUrl0 || null;\n  } else {\n    // It's an image or other media\n    messageType = \"image\";\n    mediaUrl = webhookData.MediaUrl0 || null;\n  }\n}\n\n// Return structured data\nreturn [{\n  json: {\n    message_type: messageType,\n    message_body: messageBody,\n    media_url: mediaUrl,\n    media_content_type: mediaContentType,\n    customer_phone: customerPhone,\n    num_media: numMedia,\n    full_webhook_data: webhookData\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        64,
+        -256
+      ],
+      "id": "2677aae4-fd85-4b13-a82d-cfe86649264e",
+      "name": "Check Message Type"
+    },
+    {
+      "parameters": {
+        "jsCode": "const products = [\n  {\n    id: 1,\n    name: \"RIKAY ZIP\",\n    price: \"$1000.00\",\n    category: \"Shoe\",\n    description: \"Crafted from natural pony leather with memory-foam insole.\",\n    best_for: \"versatile occasions\",\n    url: \"https://avotangi.store/products/rikay-zip\"\n  },\n  {\n    id: 2,\n    name: \"BUCHA MULE\",\n    price: \"$800.00\",\n    category: \"Mule\",\n    description: \"Suede Barefoot Model with natural movement and toe freedom.\",\n    best_for: \"casual comfort, everyday wear\",\n    url: \"https://avotangi.store/products/bucha-mule-1\"\n  },\n  {\n    id: 3,\n    name: \"MUSTACHE MULE\",\n    price: \"$800.00\",\n    category: \"Mule\",\n    description: \"Smooth cow leather with refined look and functional comfort.\",\n    best_for: \"casual comfort, everyday wear\",\n    url: \"https://avotangi.store/products/flamingo-mule\"\n  },\n  {\n    id: 4,\n    name: \"NARNIAN KARE\",\n    price: \"$800.00\",\n    category: \"Loafer\",\n    description: \"Polished cow-hair mule with hidden elastic for secure fit.\",\n    best_for: \"versatile occasions\",\n    url: \"https://avotangi.store/products/narnian-kare\"\n  },\n  {\n    id: 5,\n    name: \"LIDI MULE\",\n    price: \"$800.00\",\n    category: \"Mule\",\n    description: \"Calf hair with detachable piercing for subtle edge.\",\n    best_for: \"casual comfort, everyday wear\",\n    url: \"https://avotangi.store/products/lidi-mule\"\n  },\n  {\n    id: 6,\n    name: \"NO RISK NO STORY\",\n    price: \"$800.00\",\n    category: \"Shoe\",\n    description: \"Sculpted mule on refined Kare last with clean lines.\",\n    best_for: \"versatile occasions\",\n    url: \"https://avotangi.store/products/no-risk-no-story-1\"\n  },\n  {\n    id: 7,\n    name: \"NARNIAN ROUND\",\n    price: \"$800.00\",\n    category: \"Loafer\",\n    description: \"Sculptural mule from natural cow hair with curve-round sole.\",\n    best_for: \"versatile occasions\",\n    url: \"https://avotangi.store/products/narnian-round\"\n  },\n  {\n    id: 8,\n    name: \"NARNIAN\",\n    price: \"$800.00\",\n    category: \"Loafer\",\n    description: \"Body curve mule in cow hair on signature Kare sole.\",\n    best_for: \"versatile occasions\",\n    url: \"https://avotangi.store/products/narnian\"\n  },\n  {\n    id: 9,\n    name: \"ANDROMEDA HIGH\",\n    price: \"$1200.00\",\n    category: \"Boot\",\n    description: \"Over-the-knee sock boots with elegant sculpting.\",\n    best_for: \"winter elegance, formal events\",\n    url: \"https://avotangi.store/products/andromeda-high\"\n  },\n  {\n    id: 10,\n    name: \"TANGA HIGH KNEE\",\n    price: \"$1200.00\",\n    category: \"Boot\",\n    description: \"Leather sock-fit thigh-high boots with Body Kare sole.\",\n    best_for: \"winter elegance, formal events\",\n    url: \"https://avotangi.store/products/tanga-high-knee\"\n  },\n  {\n    id: 11,\n    name: \"MUSTACHE BOOT\",\n    price: \"$1000.00\",\n    category: \"Boot\",\n    description: \"Lycra sock boots with barefoot last design.\",\n    best_for: \"autumn winter, versatile styling\",\n    url: \"https://avotangi.store/products/mustache-boot\"\n  },\n  {\n    id: 12,\n    name: \"FLAMINGO BOOT\",\n    price: \"$1000.00\",\n    category: \"Boot\",\n    description: \"Suede elegance boot with detachable tassels.\",\n    best_for: \"autumn winter, versatile styling\",\n    url: \"https://avotangi.store/products/flamongo-boot\"\n  },\n  {\n    id: 13,\n    name: \"BUCHA ANKLE BOOT\",\n    price: \"$1000.00\",\n    category: \"Boot\",\n    description: \"Matte cow leather boot with hidden elastic.\",\n    best_for: \"autumn winter, versatile styling\",\n    url: \"https://avotangi.store/products/bucha-ankle-boot\"\n  },\n  {\n    id: 14,\n    name: \"IZIUM ANKLE BOOT\",\n    price: \"$1000.00\",\n    category: \"Boot\",\n    description: \"Glossy leather boots with harness and piercing.\",\n    best_for: \"autumn winter, versatile styling\",\n    url: \"https://avotangi.store/products/izium-ankle-boot\"\n  },\n  {\n    id: 15,\n    name: \"INFINITY\",\n    price: \"$1000.00\",\n    category: \"Sandal\",\n    description: \"Elegant sandal with innovative design.\",\n    best_for: \"summer, resort wear\",\n    url: \"https://avotangi.store/products/infinity\"\n  },\n  {\n    id: 16,\n    name: \"METRA\",\n    price: \"$1000.00\",\n    category: \"Derby\",\n    description: \"Cow matte leather with Body Kare sole for elegant posture.\",\n    best_for: \"business formal, special occasions\",\n    url: \"https://avotangi.store/products/metra\"\n  },\n  {\n    id: 17,\n    name: \"ODI DERBY PATENT\",\n    price: \"$1000.00\",\n    category: \"Derby\",\n    description: \"Patent leather derby for sophisticated formal wear.\",\n    best_for: \"business formal, special occasions\",\n    url: \"https://avotangi.store/products/odi-derby-patent\"\n  },\n  {\n    id: 18,\n    name: \"ODI DERBY\",\n    price: \"$1000.00\",\n    category: \"Derby\",\n    description: \"Hair leather platform derby with balanced style.\",\n    best_for: \"business formal, special occasions\",\n    url: \"https://avotangi.store/products/odi-derby\"\n  },\n  {\n    id: 19,\n    name: \"METRA UNISEX\",\n    price: \"$1000.00\",\n    category: \"Derby\",\n    description: \"Unisex boots with barefoot last and elegant sole.\",\n    best_for: \"versatile occasions\",\n    url: \"https://avotangi.store/products/metra-unisex\"\n  },\n  {\n    id: 20,\n    name: \"NEBULA BALLET\",\n    price: \"$800.00\",\n    category: \"Ballerina\",\n    description: \"Ballet boots from A-grade calf hair leather.\",\n    best_for: \"elegant casual, everyday sophistication\",\n    url: \"https://avotangi.store/products/nebula-ballet\"\n  },\n  {\n    id: 21,\n    name: \"NAKED BALLET\",\n    price: \"$800.00\",\n    category: \"Ballerina\",\n    description: \"Glossy finish ballet with anatomic insole.\",\n    best_for: \"elegant casual, everyday sophistication\",\n    url: \"https://avotangi.store/products/naked-ballet\"\n  },\n  {\n    id: 22,\n    name: \"MARIE ANTOINETTE\",\n    price: \"$800.00\",\n    category: \"Ballerina\",\n    description: \"Suede ballet flats with delicate stone clasp.\",\n    best_for: \"elegant casual, everyday sophistication\",\n    url: \"https://avotangi.store/products/marie-antoinette\"\n  },\n  {\n    id: 23,\n    name: \"IGNIS BALLET\",\n    price: \"$800.00\",\n    category: \"Ballerina\",\n    description: \"Flat ballets with back piercing detail.\",\n    best_for: \"elegant casual, everyday sophistication\",\n    url: \"https://avotangi.store/products/ignis-ballet\"\n  },\n  {\n    id: 24,\n    name: \"KAZIMI BALLET\",\n    price: \"$800.00\",\n    category: \"Ballerina\",\n    description: \"Patent-detail ballet flats with glossy accents.\",\n    best_for: \"elegant casual, everyday sophistication\",\n    url: \"https://avotangi.store/products/kazimi-ballet\"\n  },\n  {\n    id: 25,\n    name: \"DUNE BALLET\",\n    price: \"$800.00\",\n    category: \"Ballerina\",\n    description: \"Barefoot-last ballet flats with 3cm platform.\",\n    best_for: \"elegant casual, everyday sophistication\",\n    url: \"https://avotangi.store/products/dune-ballet\"\n  },\n  {\n    id: 26,\n    name: \"Bucha Loafers\",\n    price: \"$1000.00\",\n    category: \"Loafer\",\n    description: \"Minimalism and perfect proportions in quiet luxury.\",\n    best_for: \"versatile occasions\",\n    url: \"https://avotangi.store/products/bucha-loafers\"\n  },\n  {\n    id: 27,\n    name: \"Bucha Mule Loafers\",\n    price: \"$1000.00\",\n    category: \"Mule\",\n    description: \"Mule loafers with minimalist luxury design.\",\n    best_for: \"casual comfort, everyday wear\",\n    url: \"https://avotangi.store/products/bucha-mule-loafers\"\n  },\n  {\n    id: 28,\n    name: \"Chiton\",\n    price: \"$1000.00\",\n    category: \"Shoe\",\n    description: \"Upgraded classic with square bottom outsole.\",\n    best_for: \"versatile occasions\",\n    url: \"https://avotangi.store/products/chiton\"\n  },\n  {\n    id: 29,\n    name: \"Andromeda Boots Graphite\",\n    price: \"$1200.00\",\n    category: \"Boot\",\n    description: \"High knee boots with galactic design and half-moon heel.\",\n    best_for: \"autumn winter, versatile styling\",\n    url: \"https://avotangi.store/products/boots\"\n  },\n  {\n    id: 30,\n    name: \"Aniram Sandals Beige\",\n    price: \"$1000.00\",\n    category: \"Sandal\",\n    description: \"Clean shape with geometric square bottom outsole.\",\n    best_for: \"summer, resort wear\",\n    url: \"https://avotangi.store/products/a-4\"\n  },\n  {\n    id: 31,\n    name: \"Aniram Sandals Black\",\n    price: \"$1000.00\",\n    category: \"Sandal\",\n    description: \"Geometric square bottom outsole for everyday use.\",\n    best_for: \"summer, resort wear\",\n    url: \"https://avotangi.store/products/a-3\"\n  },\n  {\n    id: 32,\n    name: \"Aniram Sandals White\",\n    price: \"$1000.00\",\n    category: \"Sandal\",\n    description: \"Clean shape matching any style and color palette.\",\n    best_for: \"summer, resort wear\",\n    url: \"https://avotangi.store/products/a-2\"\n  },\n  {\n    id: 33,\n    name: \"Mens Loafers\",\n    price: \"$1000.00\",\n    category: \"Loafer\",\n    description: \"Full-grain Italian leather slip-on design.\",\n    best_for: \"versatile occasions\",\n    url: \"https://avotangi.store/products/mens-loafers\"\n  },\n  {\n    id: 34,\n    name: \"METRA Loafers\",\n    price: \"$800.00\",\n    category: \"Loafer\",\n    description: \"Flowing geometry with extraordinary pattern.\",\n    best_for: \"versatile occasions\",\n    url: \"https://avotangi.store/products/metra-loafers\"\n  },\n  {\n    id: 35,\n    name: \"Mr. Mustache Pink\",\n    price: \"$800.00\",\n    category: \"Shoe\",\n    description: \"Bold character mule loafers with slip-on style.\",\n    best_for: \"versatile occasions\",\n    url: \"https://avotangi.store/products/mustache-mule-loafers-1\"\n  },\n  {\n    id: 36,\n    name: \"Mariupol Tongue Loafers\",\n    price: \"$1000.00\",\n    category: \"Loafer\",\n    description: \"Bold character with ankle strap and half moon heel.\",\n    best_for: \"versatile occasions\",\n    url: \"https://avotangi.store/products/mariupol-tongue-loafers\"\n  },\n  {\n    id: 37,\n    name: \"Libra Mule Hot Pink\",\n    price: \"$1000.00\",\n    category: \"Mule\",\n    description: \"Italian leather slip-on with hourglass EVA-flex outsole.\",\n    best_for: \"casual comfort, everyday wear\",\n    url: \"https://avotangi.store/products/basic-tassel-3\"\n  },\n  {\n    id: 38,\n    name: \"Basic Tassel\",\n    price: \"$1000.00\",\n    category: \"Shoe\",\n    description: \"Leather mule with sculpted outsole design.\",\n    best_for: \"versatile occasions\",\n    url: \"https://avotangi.store/products/basic-tassel\"\n  },\n  {\n    id: 39,\n    name: \"Spiral\",\n    price: \"$1200.00\",\n    category: \"Shoe\",\n    description: \"Middle length boots with spiral designed heels.\",\n    best_for: \"versatile occasions\",\n    url: \"https://avotangi.store/products/spiral\"\n  },\n  {\n    id: 40,\n    name: \"Mantle Platform Heels\",\n    price: \"$800.00\",\n    category: \"Shoe\",\n    description: \"Round heel with contrast white lining.\",\n    best_for: \"versatile occasions\",\n    url: \"https://avotangi.store/products/mantle-platform-heels\"\n  },\n  {\n    id: 41,\n    name: \"Mercury Sabot\",\n    price: \"$800.00\",\n    category: \"Shoe\",\n    description: \"Smooth round toe with ankle strap and cushion heel.\",\n    best_for: \"versatile occasions\",\n    url: \"https://avotangi.store/products/mercury-sabot\"\n  },\n  {\n    id: 42,\n    name: \"MARS Sandals\",\n    price: \"$800.00\",\n    category: \"Sandal\",\n    description: \"Adjustable upper for incredible comfort.\",\n    best_for: \"summer, resort wear\",\n    url: \"https://avotangi.store/products/mars-sandals\"\n  },\n  {\n    id: 43,\n    name: \"Louis 14\",\n    price: \"$800.00\",\n    category: \"Shoe\",\n    description: \"Man tassel mule with premium Italian leather.\",\n    best_for: \"versatile occasions\",\n    url: \"https://avotangi.store/products/louis-14\"\n  },\n  {\n    id: 44,\n    name: \"Bipolar Hourglass\",\n    price: \"$800.00\",\n    category: \"Shoe\",\n    description: \"Limited edition transformation design in patent leather.\",\n    best_for: \"versatile occasions\",\n    url: \"https://avotangi.store/products/bipolar\"\n  },\n  {\n    id: 45,\n    name: \"Weirdo Sandals White\",\n    price: \"$800.00\",\n    category: \"Sandal\",\n    description: \"Upgraded Aniram with minimalistic asymmetric detail.\",\n    best_for: \"summer, resort wear\",\n    url: \"https://avotangi.store/products/weirdo\"\n  },\n  {\n    id: 46,\n    name: \"Aniram Halter Sandals Turquoise\",\n    price: \"$800.00\",\n    category: \"Sandal\",\n    description: \"Ankle strap with half-moon heel and halter decoration.\",\n    best_for: \"summer, resort wear\",\n    url: \"https://avotangi.store/products/a-1\"\n  },\n  {\n    id: 47,\n    name: \"Aniram Sandals Turquoise\",\n    price: \"$800.00\",\n    category: \"Sandal\",\n    description: \"Clean shape with geometric square bottom.\",\n    best_for: \"summer, resort wear\",\n    url: \"https://avotangi.store/products/a\"\n  },\n  {\n    id: 48,\n    name: \"Geisha Sandals White\",\n    price: \"$800.00\",\n    category: \"Sandal\",\n    description: \"Iconic design with ultra-fine straps and hidden elastic.\",\n    best_for: \"summer, resort wear\",\n    url: \"https://avotangi.store/products/s\"\n  },\n  {\n    id: 49,\n    name: \"Talaria Sandals Beige\",\n    price: \"$800.00\",\n    category: \"Sandal\",\n    description: \"Lightweight design for those ready to fly.\",\n    best_for: \"summer, resort wear\",\n    url: \"https://avotangi.store/products/e\"\n  },\n  {\n    id: 50,\n    name: \"Di Sandals Black\",\n    price: \"$800.00\",\n    category: \"Sandal\",\n    description: \"Secure heel with ankle strap and asymmetric design.\",\n    best_for: \"summer, resort wear\",\n    url: \"https://avotangi.store/products/d\"\n  },\n  {\n    id: 51,\n    name: \"Odessa Sandals Ivory\",\n    price: \"$800.00\",\n    category: \"Sandal\",\n    description: \"The origins collection in premium quality.\",\n    best_for: \"summer, resort wear\",\n    url: \"https://avotangi.store/products/o\"\n  },\n  {\n    id: 52,\n    name: \"Nerd Loafers\",\n    price: \"$800.00\",\n    category: \"Loafer\",\n    description: \"Italian leather with hourglass EVA-flex outsole.\",\n    best_for: \"versatile occasions\",\n    url: \"https://avotangi.store/products/nerd-loafers\"\n  },\n  {\n    id: 53,\n    name: \"Flamingo Mule Pink\",\n    price: \"$800.00\",\n    category: \"Mule\",\n    description: \"Premium natural leather slip-on mule construction.\",\n    best_for: \"casual comfort, everyday wear\",\n    url: \"https://avotangi.store/products/three-tassel-mule-loafers\"\n  },\n  {\n    id: 54,\n    name: \"Izium Loafers\",\n    price: \"$800.00\",\n    category: \"Loafer\",\n    description: \"Signature style with ankle strap and half moon heel.\",\n    best_for: \"versatile occasions\",\n    url: \"https://avotangi.store/products/izium-loafers\"\n  },\n  {\n    id: 55,\n    name: \"Mr. Mustache Mule Turquoise\",\n    price: \"$800.00\",\n    category: \"Mule\",\n    description: \"Bold character with easy-going slip-on style.\",\n    best_for: \"casual comfort, everyday wear\",\n    url: \"https://avotangi.store/products/mustache-mule-loafers\"\n  }\n];\n\nconst messageData = $input.first().json;\nconst customerMessage = messageData.message_body || \"\";\nconst customerPhone = messageData.customer_phone;\nconst messageLower = customerMessage.toLowerCase();\n// Detect greeting messages for welcome response\nconst greetings = ['hi', 'hello', 'hey', 'start', 'help', 'hii', 'hiii', 'heya'];\nconst trimmedMessage = messageLower.trim();\nconst isGreeting = greetings.some(g => trimmedMessage === g || trimmedMessage === g + '!' || trimmedMessage === g + '?');\n\nif (isGreeting) {\n  const welcomePrompt = `Customer just greeted you with: \"${customerMessage}\"\n\nWELCOME MESSAGE INSTRUCTIONS:\nCreate a warm, elegant welcome as their personal stylist at Avotangi boutique. Include:\n\n1. Warm greeting and introduction to Avotangi\n2. Brief mention: We specialize in handcrafted Italian leather footwear\n3. Our collection: Boots, Mules, Sandals, Loafers, Derbies, Ballerinas ($800-$1200)\n4. Ask: \"What type of footwear are you looking for today?\" or \"What occasion do you have in mind?\"\n\nKeep it sophisticated, warm, inviting. Under 100 words. Sound like a luxury boutique, not a chatbot.`;\n\n  return [{\n    json: {\n      products: products,\n      customer_message: welcomePrompt,\n      original_message: customerMessage,\n      customer_phone: customerPhone,\n      total_products: products.length,\n      is_greeting: true\n    }\n  }];\n}\nlet relevantProducts = products;\n\nif (messageLower.includes('boot')) {\n  relevantProducts = products.filter(p => p.category === 'Boot');\n} else if (messageLower.includes('mule')) {\n  relevantProducts = products.filter(p => p.category === 'Mule');\n} else if (messageLower.includes('sandal') || messageLower.includes('summer')) {\n  relevantProducts = products.filter(p => p.category === 'Sandal');\n} else if (messageLower.includes('formal') || messageLower.includes('wedding') || messageLower.includes('business')) {\n  relevantProducts = products.filter(p => p.category === 'Derby');\n} else if (messageLower.includes('casual')) {\n  relevantProducts = products.filter(p => p.category === 'Mule' || p.category === 'Loafer');\n} else if (messageLower.includes('ballet') || messageLower.includes('flat')) {\n  relevantProducts = products.filter(p => p.category === 'Ballerina');\n}\n\nconst productList = relevantProducts.slice(0, 12).map(p => \n  `${p.name} (${p.price}) - ${p.category}`\n).join(', ');\n\nlet aiPrompt = `Customer said: \"${customerMessage}\"\\n\\nAvotangi products: ${productList}\\n\\nRespond as a warm luxury footwear stylist. Recommend 2-3 specific products with prices. Keep under 150 words.`;\n\nreturn [{\n  json: {\n    products: products,\n    customer_message: aiPrompt,\n    original_message: customerMessage,\n    customer_phone: customerPhone,\n    total_products: products.length,\n    filtered_products: relevantProducts.length\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        736,
+        -160
+      ],
+      "id": "0ffac0bb-97e2-491b-a8d4-5ad126c9df8a",
+      "name": "Product Database"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.groq.com/openai/v1/chat/completions",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer [YOUR_GROQ_API_KEY]"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"llama-3.3-70b-versatile\",\n  \"messages\": [\n    {\n      \"role\": \"system\",\n      \"content\": \"You are a personal stylist at Avotangi luxury footwear boutique in Dubai. Be warm, helpful, and consultative. Always recommend specific products with prices from our collection. CRITICAL INSTRUCTION FOR FOLLOW-UP QUESTIONS: When customers ask follow-up questions like 'is it available in black' or 'what sizes' or 'tell me more' or 'does it come in other colors' - they are ALWAYS referring to products recently discussed in THIS conversation. Use context clues from their question to infer what they mean.\"\n    },\n    {\n      \"role\": \"user\",\n      \"content\": {{ JSON.stringify($json.customer_message) }}\n    }\n  ],\n  \"temperature\": 0.9,\n  \"max_tokens\": 300\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        960,
+        -160
+      ],
+      "id": "5502c747-735b-484f-8b5c-6d45974a5ae8",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Extract AI response with comprehensive error handling\nconst groqResponse = $input.first().json;\nlet aiMessage = \"\";\nlet errorOccurred = false;\n\ntry {\n  // Check if response has expected structure\n  if (groqResponse && groqResponse.choices && groqResponse.choices[0]) {\n    aiMessage = groqResponse.choices[0].message.content;\n    \n    // Validate the message is not empty\n    if (!aiMessage || aiMessage.trim().length === 0) {\n      throw new Error(\"Empty AI response\");\n    }\n  } else if (groqResponse && groqResponse.error) {\n    // API returned an error\n    console.error(\"Groq API Error:\", groqResponse.error);\n    const errorMessage = groqResponse.error.message || \"Unknown error\";\n    \n    // Check if it's a rate limit error\n    if (errorMessage.includes('rate limit') || errorMessage.includes('429')) {\n      aiMessage = \"I'm experiencing high demand at the moment. Please try again in a few seconds. Thank you for your patience!\";\n    } else {\n      aiMessage = \"I apologize for the technical issue. Please send your message again, and I'll be happy to assist you.\";\n    }\n    errorOccurred = true;\n  } else {\n    // Unexpected response format\n    console.error(\"Unexpected response format:\", JSON.stringify(groqResponse).substring(0, 200));\n    aiMessage = \"Thank you for reaching out! Could you please rephrase your question? I'm here to help you find the perfect Avotangi footwear.\";\n    errorOccurred = true;\n  }\n} catch (error) {\n  // Code execution error\n  console.error(\"Error extracting AI response:\", error.message);\n  aiMessage = \"I'm here to help you find the perfect shoes! Please send your message again, and I'll be right with you.\";\n  errorOccurred = true;\n}\n\n// Final safety check\nif (!aiMessage || aiMessage.trim().length === 0) {\n  aiMessage = \"Welcome to Avotangi! How may I assist you in finding the perfect footwear today?\";\n  errorOccurred = true;\n}\n\n// Get customer phone from available sources\nlet customerPhone = \"\";\ntry {\n  customerPhone = $input.first().json.customer_phone || \n                  $('Conversation Context').first().json.customer_phone ||\n                  $('Check Message Type').first().json.customer_phone;\n} catch (e) {\n  console.error(\"Could not get customer phone:\", e.message);\n}\n\n// Return response\nreturn [{\n  json: {\n    ai_response: aiMessage,\n    customer_phone: customerPhone,\n    had_error: errorOccurred,\n    timestamp: new Date().toISOString()\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1184,
+        -160
+      ],
+      "id": "4b8b0c8d-c850-4db2-ba70-56d50ee96ab0",
+      "name": "Extract AI Response"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "ecd44140-1fe0-4ade-83e3-1f02779ad2d6",
+              "leftValue": "={{ $json.message_type }}",
+              "rightValue": "voice",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        512,
+        -256
+      ],
+      "id": "5daf9e75-651d-4561-913c-f08aa59d546f",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get the incoming data\nconst item = $input.first().json;\n\n// Define the response message\nconst responseMessage = \"Thank you for your voice message! To help me recommend the perfect Avotangi shoes for you, could you please type what you're looking for? For example: 'I need boots for winter' or 'Show me casual mules'.\";\n\n// Return the structured object\nreturn [{\n  json: {\n    message_body: responseMessage,\n    customer_phone: item.customer_phone\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        736,
+        -352
+      ],
+      "id": "1da838cf-1548-4b88-8b67-1f6c9cf82384",
+      "name": "Handle Voice Message"
+    },
+    {
+      "parameters": {
+        "from": "whatsapp:+14155238886",
+        "to": "={{ $json.customer_phone }}",
+        "message": "={{ $json.message_body }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.twilio",
+      "typeVersion": 1,
+      "position": [
+        960,
+        -352
+      ],
+      "id": "d9618835-ff19-457b-851b-64c221d7e7e5",
+      "name": "Send an SMS/MMS/WhatsApp message1",
+      "credentials": {
+        "twilioApi": {
+          "id": "K2Qdsf9Latmcoqmo",
+          "name": "Twilio account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Conversation Memory Architecture\n// In production: This would query a database (Redis/PostgreSQL) by phone number\n// For demo: We show the structure and intelligent context handling\n\nconst messageData = $input.first().json;\nconst customerPhone = messageData.customer_phone;\nconst currentMessage = messageData.message_body || \"\";\nconst messageType = messageData.message_type;\n\n// Detect if this is a follow-up question (short message, no product keywords)\nconst messageLower = currentMessage.toLowerCase();\nconst isShortMessage = currentMessage.length < 30;\nconst hasQuestionWords = ['do you', 'can you', 'what about', 'how about', 'is it', 'does it'].some(q => messageLower.includes(q));\nconst likelyFollowUp = isShortMessage && hasQuestionWords;\n\n// Create conversation context object\nconst conversationContext = {\n  customer_phone: customerPhone,\n  message_count: 1, // In production: Would be actual count from database\n  is_likely_followup: likelyFollowUp,\n  session_started: new Date().toISOString(),\n  // In production: previous_messages, last_recommendation, etc.\n  note: \"Production version would store conversation history in database\"\n};\n\n// Pass all data forward\nreturn [{\n  json: {\n    message_type: messageType,\n    message_body: currentMessage,\n    customer_phone: customerPhone,\n    media_url: messageData.media_url,\n    media_content_type: messageData.media_content_type,\n    num_media: messageData.num_media,\n    conversation_context: conversationContext,\n    full_webhook_data: messageData.full_webhook_data\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        288,
+        -256
+      ],
+      "id": "3e249841-12ff-42d8-bc42-e656d3bc3e1a",
+      "name": "Load Conversation History"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Check Message Type",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Message Type": {
+      "main": [
+        [
+          {
+            "node": "Load Conversation History",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Product Database": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Extract AI Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract AI Response": {
+      "main": [
+        [
+          {
+            "node": "Send an SMS/MMS/WhatsApp message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Handle Voice Message",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Product Database",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Handle Voice Message": {
+      "main": [
+        [
+          {
+            "node": "Send an SMS/MMS/WhatsApp message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send an SMS/MMS/WhatsApp message1": {
+      "main": [
+        []
+      ]
+    },
+    "Load Conversation History": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "f278d9b0-6376-4a68-a07c-fb8f433cec9e",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "d3c21dde9f7edce6da5cfab585ee6a80c26c7e36fae99d8ffa2010afd1571433"
+  },
+  "id": "g_7iiulju7kWx2Q4zsg-K",
+  "tags": []
+}
