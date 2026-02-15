@@ -296,9 +296,17 @@ For portfolio and educational purposes only.
 
 ---
 
+## Screenshots
+   
+   ### n8n Workflow
+   ![Workflow](assets/screenshots/workflow.png)
+   
+   ### WhatsApp Conversation
+   ![Chat Example](assets/screenshots/whatsapp Messages.png)
+   
 ## 👤 About Me
 
-**[Your Name]**  
+**Pavan Kumar Koti**  
 Aspiring AI/Automation Engineer passionate about building intelligent systems that solve real business problems.
 
 - 📧 Email: kotipavankumar12@gmail.com
