@@ -301,9 +301,8 @@ For portfolio and educational purposes only.
 **[Your Name]**  
 Aspiring AI/Automation Engineer passionate about building intelligent systems that solve real business problems.
 
-- 📧 Email: [your.email@example.com]
-- 💼 LinkedIn: [linkedin.com/in/yourprofile](https://linkedin.com/in/yourprofile)
-- 🌐 Portfolio: [yourwebsite.com](https://yourwebsite.com)
+- 📧 Email: kotipavankumar12@gmail.com
+- 💼 LinkedIn: www.linkedin.com/in/pavan-kumar-koti-200b4438b
 - 📱 GitHub: [@yourusername](https://github.com/yourusername)
 
 ---
@@ -323,7 +322,7 @@ Aspiring AI/Automation Engineer passionate about building intelligent systems th
 Interested in this project or want to collaborate?  
 Feel free to reach out!
 
-**Built with ❤️ and ☕ in [Your City]**
+**Built with ❤️ and ☕ in Ongole**
 
 ---
 
