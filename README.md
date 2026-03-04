@@ -69,11 +69,35 @@ Twilio → Customer
 
 | Component | Technology |
 |-----------|-----------|
-| **Automation** | n8n Cloud |
-| **Messaging** | Twilio WhatsApp Business API |
+| **Automation** | Make.com (previously n8n) |
+| **Messaging** | Twilio WhatsApp API |
 | **AI Model** | Groq LLaMA 3.3 70B Versatile |
 | **Language** | JavaScript (Node.js) |
 | **Data Source** | Avotangi Shopify Store API |
+
+**Platform History:**
+- v1.0 (Feb 2026): n8n Cloud
+- v2.0 (Mar 2026): Migrated to Make.com for production stability
+```
+
+---
+
+### **3. Create New Folder Structure**
+
+**Add a new folder for Make.com workflow:**
+```
+avotangi-whatsapp-ai-stylist/
+├── README.md (updated)
+├── docs/
+│   ├── technical-documentation.md
+│   └── migration-notes.md (NEW!)
+├── n8n-workflow/
+│   └── avotangi-workflow.json (original)
+├── make-com-workflow/ (NEW FOLDER!)
+│   ├── scenario-blueprint.json (export from Make.com)
+│   └── README.md (setup instructions)
+└── demo/
+    └── demo-video.md
 
 ## 🔄 Platform Migration Update
 
