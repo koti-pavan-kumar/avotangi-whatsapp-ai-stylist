@@ -75,6 +75,22 @@ Twilio → Customer
 | **Language** | JavaScript (Node.js) |
 | **Data Source** | Avotangi Shopify Store API |
 
+## 🔄 Platform Migration Update
+
+**Current Status:** Migrated from n8n to Make.com (March 2026)
+
+**Why the migration:**
+- n8n Cloud trial period ended
+- Make.com offers stable free tier (1,000 operations/month)
+- No trial limitations
+- Enhanced reliability for long-term deployment
+
+**Impact:** Zero functionality changes - all features maintained during migration. This demonstrates platform-agnostic architecture and API portability.
+
+**Both implementations available:**
+- Original n8n workflow: `/n8n-workflow/`
+- Current Make.com scenario: `/make-com-workflow/`
+
 ---
 
 ## 📊 Performance Metrics
